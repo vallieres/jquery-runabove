@@ -115,7 +115,7 @@
             type        : 'POST',
             url         : baseUrl + '/auth/credential',
             headers     : $.extend({
-                'X-Ra-Application' : keys.ak
+                'X-Ovh-Application' : keys.ak
             }, getHeaders()),
             processData : false,
             data        : JSON.stringify({
@@ -200,12 +200,29 @@
                 // Because we delete params from original object, save a local copy.
                 params = $.extend({}, config.params);
 
+                // URL parameters to append to the URL
+                var urlParams = [];
+
                 $.each(params, function (paramKey, paramVal) {
+                    // Replace variable token with value
                     if ((new RegExp('{' + paramKey + '}')).test(config.url)) {
                         config.url = config.url.replace('{' + paramKey + '}', encodeURIComponent(paramVal));
                         delete params[paramKey];
+                    // Add to array to append later
+                    } else {
+                        urlParams.push({'name': paramKey, 'value': paramVal});
                     }
                 });
+
+                // Append URL parameters to the URL
+                if( urlParams.length > 0 ) {
+                    var strParams = $.param( urlParams );
+                    if( config.url.indexOf('?') > 2 ) {
+                        config.url += '&' + strParams;
+                    } else {
+                        config.url += '?' + strParams;
+                    }
+                }
             }
 
             // Get cached params
@@ -285,7 +302,7 @@
         return $.ajax({
             type    : 'GET',
             url     : baseUrl + '/auth/time',
-            cache   : true,
+            cache   : false,
             headers : getHeaders()
         })[then](function (data) {
 
@@ -315,16 +332,16 @@
         if (!opts) {
             // No authentication
             return {
-                'Content-Type' : 'application/json;charset=UTF-8'
+                'Content-Type' : 'application/json;charset=utf-8'
             };
         } else {
             var diff = (Math.floor(Date.now() / 1000) - opts.diff).toString();
             return {
-                'Content-Type'      : 'application/json;charset=UTF-8',
-                'X-Ra-Application' : keys.ak,
-                'X-Ra-Consumer'    : keys.ck,
-                'X-Ra-Timestamp'   : diff,
-                'X-Ra-Signature'   : signRequest({
+                'Content-Type'      : 'application/json;charset=utf-8',
+                'X-Ovh-Application' : keys.ak,
+                'X-Ovh-Consumer'    : keys.ck,
+                'X-Ovh-Timestamp'   : diff,
+                'X-Ovh-Signature'   : signRequest({
                     method : opts.method,
                     url    : opts.url,
                     body   : opts.body,

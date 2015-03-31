@@ -11,6 +11,7 @@ jQuery module to access and consume the [RunAbove](https://api.runabove.com) API
 
 The RunAbove API Console is available [here](https://api.runabove.com/console).
 
+This was basically a copy-paste of [jquery-ovh](https://github.com/blaryjp/jquery-ovh/) from [@blaryjp](https://github.com/blaryjp). Props to him, not me!
 
 Installation
 ------------
@@ -55,10 +56,10 @@ The Application Key (AK) and the Application Secret (AS) is mandatory.
 
 #### Get an Application Key (AK) and an Application Secret (AS)
 
-In order to use the API, you need to create a third party application in OVH.
-Go to [this link](https://eu.api.ovh.com/createApp/), and follow the steps. It will give you an AK and an AS to use for your application.
+In order to use the API, you need to create a third party application in RunAbove.
+Go to [this link](https://api.runabove.com/createApp/), and follow the steps. It will give you an AK and an AS to use for your application.
 
-You can find more informations [here](https://api.ovh.com/g934.first_step_with_api).
+You can find more informations [here](https://community.runabove.com/kb/en/instances/how-to-use-runabove-api.html).
 
 
 Usage
@@ -93,10 +94,10 @@ $.runabove.get('/me').fail(function (error) {
 
 * **login([urlToRedirect])**
 ```javascript
-$.ovh.login('http://www.example.com/home');
+$.runabove.login('http://www.example.com/home');
 ```
 Log the user (request a new credential).
-It will redirect the user to the OVH API login page.
+It will redirect the user to the RunAbove API login page.
 When logged, user will be redirected to the given URL (or current location if omitted).
 
 The token (the "Consumer Key" ("CK")) will be stored into the _localStorage_.
@@ -140,7 +141,7 @@ Note that the `done` promise returns directly the datas.
 
 * **getSchema(schemaPath)**
 ```javascript
-$.ovh.getSchema('/me');
+$.runabove.getSchema('/me');
 ```
 Get specific schema from API (here "/me").
 
